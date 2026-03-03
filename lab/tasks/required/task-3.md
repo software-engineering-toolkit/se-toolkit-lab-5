@@ -23,10 +23,11 @@ An AI coding agent can help with the `Chart.js` integration.
   - [1.3. Install the chart library](#13-install-the-chart-library)
   - [1.4. Create the dashboard component](#14-create-the-dashboard-component)
   - [1.5. Add navigation](#15-add-navigation)
-  - [1.6. Verify locally](#16-verify-locally)
-  - [1.7. Deploy to the VM](#17-deploy-to-the-vm)
-  - [1.8. Commit your work](#18-commit-your-work)
-  - [1.9. Finish the task](#19-finish-the-task)
+  - [1.6. Run the type checker](#16-run-the-type-checker)
+  - [1.7. Verify locally](#17-verify-locally)
+  - [1.8. Deploy to the VM](#18-deploy-to-the-vm)
+  - [1.9. Commit your work](#19-commit-your-work)
+  - [1.10. Finish the task](#110-finish-the-task)
 - [2. Acceptance criteria](#2-acceptance-criteria)
 
 ## 1. Steps
@@ -82,7 +83,8 @@ Title: `[Task] Dashboard Front-end`
    > 2. Shows a bar chart of score buckets using `react-chartjs-2`.
    > 3. Shows a line chart of submissions per day.
    > 4. Shows a table of pass rates per task.
-   > 5. Includes a dropdown to select different labs."
+   > 5. Includes a dropdown to select different labs.
+   > 6. The code must pass `npm run typecheck` (TypeScript strict mode). Use proper types for all API responses — no `any`."
 
 3. Review the generated code. Make sure it:
 
@@ -90,6 +92,7 @@ Title: `[Task] Dashboard Front-end`
    - Reads the API token from `localStorage` (key: `api_key`) for the `Authorization: Bearer` header.
    - Renders at least one `<canvas>` element (this is how `Chart.js` renders charts).
    - Handles loading and error states.
+   - Uses proper TypeScript types for API responses (no `any` types).
 
 > [!TIP]
 > If you prefer to implement manually, here is the minimal setup for a bar chart:
@@ -113,7 +116,44 @@ Title: `[Task] Dashboard Front-end`
    - Add buttons or links in the header to switch between pages.
    - Render the Items table or the Dashboard component based on the current page.
 
-### 1.6. Verify locally
+### 1.6. Run the type checker
+
+> [!IMPORTANT]
+> AI coding agents often generate code with type errors. `TypeScript` strict mode catches bugs like `undefined is not a function` **before** they reach the browser.
+
+1. To navigate to the front-end directory,
+
+   [run in the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   cd frontend
+   ```
+
+2. To run the type checker,
+
+   [run in the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   npm run typecheck
+   ```
+
+3. Fix any errors reported by the type checker. Common issues:
+
+   - Missing type annotations on function parameters or return values.
+   - Using `any` instead of a proper interface for API responses.
+   - Accessing properties on possibly `undefined` values without null checks.
+
+   > [!TIP]
+   > If you used an AI agent, give it the error output and ask it to fix the type errors.
+   > Include the instruction "Do not use `any` types" in your prompt.
+
+4. Go back to the project root:
+
+   ```terminal
+   cd ..
+   ```
+
+### 1.7. Verify locally
 
 1. To navigate to the front-end directory,
 
@@ -152,7 +192,7 @@ Title: `[Task] Dashboard Front-end`
    > Make sure you have run `POST /pipeline/sync` at least once (from Task 1)
    > so there is data for the analytics endpoints to return.
 
-### 1.7. Deploy to the VM
+### 1.8. Deploy to the VM
 
 1. [Connect to your VM](../../../wiki/vm.md#connect-to-the-vm).
 2. To deploy the updated front-end,
@@ -188,7 +228,7 @@ Title: `[Task] Dashboard Front-end`
 
    </details>
 
-### 1.8. Commit your work
+### 1.9. Commit your work
 
 1. [Commit](../../../wiki/git-workflow.md#commit) your changes.
 
@@ -198,7 +238,7 @@ Title: `[Task] Dashboard Front-end`
    feat: add analytics dashboard with charts
    ```
 
-### 1.9. Finish the task
+### 1.10. Finish the task
 
 1. [Create a PR](../../../wiki/git-workflow.md#create-a-pr-to-the-main-branch-in-your-fork) with your changes.
 2. [Get a PR review](../../../wiki/git-workflow.md#get-a-pr-review) and complete the subsequent steps in the `Git workflow`.
@@ -212,6 +252,7 @@ Title: `[Task] Dashboard Front-end`
 - [ ] The Dashboard component imports from `Chart.js`.
 - [ ] The front-end renders at least one `<canvas>` element (chart).
 - [ ] Navigation exists between the Items page and the Dashboard.
+- [ ] `npm run typecheck` passes with no errors.
 - [ ] The production build is deployed on the VM.
 - [ ] PR is approved.
 - [ ] PR is merged.
