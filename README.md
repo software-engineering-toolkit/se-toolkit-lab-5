@@ -25,24 +25,20 @@ A senior data engineer explains your next assignment:
 
 > 1. Build an ETL pipeline that fetches data from the autochecker API and loads it into the database.
 > 2. Implement analytics endpoints that aggregate the data for dashboards.
-> 3. Add charts to the front-end to visualize the analytics.
+> 3. Add dashboard charts to the front-end to visualize the analytics.
 
 > [!IMPORTANT]
 > Communicate through issues and PRs and deliver a working deployment.
 
 ## Learning advice
 
-Read the tasks and complete them by yourself.
+Read the tasks, do the setup properly, work with an agent to help you:
 
-When stuck or not sure, ask an LLM:
+> Let's solve this. I want to maximize learning.
 
-> Give me directions on how to solve this task. I want to maximize learning.
+> Why is this important? What exactly do we need to do?
 
-> Why is this task important? What exactly do I need to do?
-
-Provide enough context by giving it the whole file, not one or two lines. Ideally pass the setup file too.
-
-Remember: Use the LLM to enhance your understanding, not replace it.
+You need an agent that has access to the whole repo to work effectively.
 
 ## Learning outcomes
 
