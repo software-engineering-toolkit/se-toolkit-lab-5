@@ -129,14 +129,22 @@ async def load_items(items: list[dict], session: AsyncSession) -> int:
 
     for item in labs:
         lab_title = item.get("title")
-        if not lab_title:
+        lab_code = item.get("lab")
+        if not lab_title or not lab_code:
             continue
         statement = select(ItemRecord).where(
-            ItemRecord.type == "lab", ItemRecord.title == lab_title
+            ItemRecord.type == "lab",
+            ItemRecord.attributes["lab"].astext == lab_code,
         )
         existing = (await session.exec(statement)).first()
         if existing is None:
-            session.add(ItemRecord(type="lab", title=lab_title))
+            session.add(
+                ItemRecord(
+                    type="lab",
+                    title=lab_title,
+                    attributes={"lab": lab_code},
+                )
+            )
             await session.flush()
             created += 1
 
@@ -147,7 +155,8 @@ async def load_items(items: list[dict], session: AsyncSession) -> int:
             continue
 
         lab_statement = select(ItemRecord).where(
-            ItemRecord.type == "lab", ItemRecord.title == lab_name
+            ItemRecord.type == "lab",
+            ItemRecord.attributes["lab"].astext == lab_name,
         )
         lab_item = (await session.exec(lab_statement)).first()
 
@@ -162,7 +171,12 @@ async def load_items(items: list[dict], session: AsyncSession) -> int:
         existing = (await session.exec(task_statement)).first()
         if existing is None:
             session.add(
-                ItemRecord(type="task", title=task_title, parent_id=lab_item.id)
+                ItemRecord(
+                    type="task",
+                    title=task_title,
+                    parent_id=lab_item.id,
+                    attributes={"lab": lab_name, "task": item.get("task")},
+                )
             )
             await session.flush()
             created += 1
@@ -223,14 +237,16 @@ async def load_logs(logs: list[dict], session: AsyncSession) -> int:
         task_title = log.get("task")
         if task_title:
             item_statement = select(ItemRecord).where(
-                ItemRecord.type == "task", ItemRecord.title == task_title
+                ItemRecord.type == "task",
+                ItemRecord.attributes["task"].astext == task_title,
             )
             item = (await session.exec(item_statement)).first()
         else:
             lab_title = log.get("lab")
             if lab_title:
                 item_statement = select(ItemRecord).where(
-                    ItemRecord.type == "lab", ItemRecord.title == lab_title
+                    ItemRecord.type == "lab",
+                    ItemRecord.attributes["lab"].astext == lab_title,
                 )
                 item = (await session.exec(item_statement)).first()
 
